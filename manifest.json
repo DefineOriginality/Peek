@@ -11,6 +11,7 @@
     "service_worker": "bg.js"
   },
   "host_permissions": [
-    "https://ch.tetr.io/*"
+    "https://ch.tetr.io/*",
+    "https://defineoriginality.github.io/*"
   ]
 }

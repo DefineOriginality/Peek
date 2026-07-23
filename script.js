@@ -1,3 +1,5 @@
+const ver = "v1.0.1";
+
 // too lazy to edit formulas from copy-paste so that's what this thing does
 const pow = Math.pow;
 
@@ -176,8 +178,41 @@ async function oppPlaystyles(user, oppStyle) {
     }
 }
 
+async function showVersionStatus() {
+    const versioning = document.getElementById("versioning");
+    versioning.textContent = "";
+
+    try {
+        const response = await fetch("https://defineoriginality.github.io/peek_ver.json");
+        if (!response.ok) {
+            throw new Error(`Version check failed: ${response.status}`);
+        }
+
+        const verInfo = await response.json();
+        const latestVersion = verInfo?.latest?.version;
+        const latestLink = verInfo?.latest?.link;
+
+        if (!verInfo?.accepted?.includes(ver) && typeof latestVersion === "string" && latestVersion && typeof latestLink === "string" && latestLink) {
+            outdated = true;
+            versioning.append("Your version is outdated! Download ", latestVersion, " ");
+            const link = document.createElement("a");
+            link.href = latestLink;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = "here.";
+            versioning.append(link);
+            return verInfo?.latest?.important;
+        }
+    } catch (error) { return false; }
+}
+
+const updateRequired = showVersionStatus();
+
+document.getElementById("footer").insertAdjacentHTML("afterbegin", ver+".");
+
 document.getElementById("fetch").onclick = async function() {
-    const username = document.getElementById("user").value.trim();
+    if (updateRequired) { alert("A new critical patch is available. You'll still be able to use Peek, but you'll see this message every time. Please update at your earliest convenience."); }
+    const username = document.getElementById("user").value.trim().toLowerCase();
     const playstyle = await getPlaystyle(username);
     await oppPlaystyles(username, playstyle);
 };
