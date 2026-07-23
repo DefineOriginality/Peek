@@ -1,4 +1,4 @@
-const ver = "v1.0.1";
+const ver = "v1.1.0";
 
 // too lazy to edit formulas from copy-paste so that's what this thing does
 const pow = Math.pow;
