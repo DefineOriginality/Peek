@@ -206,12 +206,10 @@ async function showVersionStatus() {
     } catch (error) { return false; }
 }
 
-const updateRequired = showVersionStatus();
-
 document.getElementById("footer").insertAdjacentHTML("afterbegin", ver+".");
 
 document.getElementById("fetch").onclick = async function() {
-    if (updateRequired) { alert("A new critical patch is available. You'll still be able to use Peek, but you'll see this message every time. Please update at your earliest convenience."); }
+    if (await showVersionStatus()) { alert("A new critical patch is available. You'll still be able to use Peek, but you'll see this message every time. Please update at your earliest convenience."); }
     const username = document.getElementById("user").value.trim().toLowerCase();
     const playstyle = await getPlaystyle(username);
     await oppPlaystyles(username, playstyle);
